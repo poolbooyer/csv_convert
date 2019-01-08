@@ -2,9 +2,7 @@
 require 'open-uri'
 require 'Poppler'
 
-#url='https://www.data.jma.go.jp/fcd/yoho/data/typhoon/T1825.pdf'
-
-#files path
+#file's path
 url='T1824.pdf'
 
 #read pdf files
