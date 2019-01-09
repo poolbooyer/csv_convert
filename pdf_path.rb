@@ -3,16 +3,17 @@ require 'open-uri'
 require 'Poppler'
 
 #file's path
-url='T1824.pdf'
+url='T1801.pdf'
 
 #read pdf files
 reader= Poppler::Document.new(url)
 reader_rm=reader.first.get_text.gsub("
 "," ")
 data=reader_rm.split(" ")
+filename=data[2].delete("(").delete(")")+".csv"
 
 #output read data
-File.open('hoge.csv','w') do |csv| # output to csv file
+File.open(filename,'w') do |csv| # output to csv file
     data.each do |bo|
         csv << bo
     end        
