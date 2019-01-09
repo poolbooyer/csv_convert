@@ -7,6 +7,13 @@ url='T1824.pdf'
 
 #read pdf files
 reader= Poppler::Document.new(url)
+reader_rm=reader.first.get_text.gsub("
+"," ")
+data=reader_rm.split(" ")
 
 #output read data
-puts reader.first.get_text
+File.open('hoge.csv','w') do |csv| # output to csv file
+    data.each do |bo|
+        csv << bo
+    end        
+end
