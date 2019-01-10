@@ -2,7 +2,6 @@
 #require 'open-uri'
 require 'Poppler'
 require 'pdf-reader'
-#file's path
 
 def read
     url='./basedata/T1722.pdf'
