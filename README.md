@@ -1,8 +1,16 @@
 # What is this app?
-- This app is using for exchange pdf for csv.
-- Based data is getting from here ( https://www.data.jma.go.jp/fcd/yoho/typhoon/position_table/index.html ).
+- このアプリケーションはpdfデータをCSVにコンバートするツールです。
+- このアプリケーションで使用する元データとしているのはリンク先を参照してください。( https://www.data.jma.go.jp/fcd/yoho/typhoon/position_table/index.html ).
+# How to use
+1. アプリケーションをcloneかダウンロード
+2. カレントディレクトリをcloneかダウンロードしたディレクトリにします。
+3. コマンドライン引数に使用するファイルのファイル名の数値部分のみをつけて実行します。
+4. outputdataディレクトリ以下に結果が出力されます。
 
-#Release Note
+# Release Note
 ## 2019/1/9
 - PDFデータの読み込みが可能になりました
 - 読み込んだデータをCSVに出力可能になりました(全データそのまま)
+## 2019/1/15
+- 読み込んだデータを改行等も含めて調整して出力可能になりました。
+- プログラムのソースコードのリファクタリングを行いました。
