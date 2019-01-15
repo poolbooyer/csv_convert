@@ -4,7 +4,7 @@ require 'Poppler'
 require 'pdf-reader'
 
 def read
-    url='./basedata/T1722.pdf'
+    url='./basedata/T'+ARGV[0]+'.pdf'
     reader = PDF::Reader.new(url)
     i=0
     puts reader.metadata
@@ -17,17 +17,36 @@ def read
 end
 read
 def create_data
-    reader_cm=$read_data[0]
-    $data=reader_cm.split(" ")
-    $filename=$data[2].delete("(").delete(")")+".csv"
+    i=0
+    $data=""
+    $read_data.each do |page|
+        $data=$data+page
+        i=i+1
+    end
+    
+    $data=$data.gsub("
+        ","\n")
+    $data=$data.split("\n")
+    i=0
+    
+    $data.each do |line|
+        $data[i]=line.split(" ")
+        i=i+1
+    end
+    puts $data[0][2]
+    $filename=$data[0][2].delete("(").delete(")")+".csv"
+    $path="./outputdata/"+$filename
 end
 create_data
 #output read data
 def output
-    File.open($filename,'w') do |csv| # output to csv file
-        $data.each do |bo|
-            csv << bo+","
-        end        
+    File.open($path,'w') do |csv| # output to csv file
+        $data.each do |line|
+            line.each do|cel|
+                csv <<cel+","
+            end
+            csv<<"\n"
+        end
     end
 end
 output
