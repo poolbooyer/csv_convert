@@ -2,6 +2,4 @@ pdf.code-workspace
 loaddata.xlsx
 ~$loaddata.xlsx
 outputdata/*
-basedata/T0813.pdf
-basedata/T1616.pdf
-basedata/T1626.pdf
+basedata/*
