@@ -36,10 +36,16 @@ def create_data
         i=i+1
     end
     #出力先ファイル名の定義
-    $filename=$data[0][2].delete("(").delete(")")+".csv"
+    $filename=ARGV[0]+".csv"
     $path="./outputdata/"+$filename
 end
+# 日本語文字の削除処理を実施
 def del_char
+    #表のタイトル等の削除
+    for num in 0..8 do
+        $data.delete_at(0)
+    end
+    #タイトル外の文字列を削除
     $data.each do |line|
         line.delete("---")
         line.delete("--")
@@ -83,12 +89,80 @@ def del_char
         line.delete("風速")
     end
 end
-def del_area
-    for num in 0..8 do
-        $data.delete_at(0)
-    end
+# 文字列をfloatに変換
+def change_float
     $data.each do |line|
         line.map!{|x| x.to_f}
+    end
+end
+#各行のデータ数の調整
+def change_line
+    i=0
+    $data.each do |line|
+        if line.length ==2 || line.length==1 || line.length==0 then
+            $data.delete_at(i)
+        end
+        i=i+1
+    end
+    stack=[]
+    i=0
+    $data.each do |line|
+        #気圧以降のデータの削除
+        line.each do|cel|
+            if 800>cel then
+                stack.push(cel)
+                
+            else
+                stack.push(cel)
+                break
+            end
+        end
+        $data[i]=stack
+        stack=[]
+        i=i+1
+    end
+    i=0
+    #データ数が欠損している部分の補完
+    $data.each do |line|
+        if line.length==5 then
+            n=i
+            while $data[n].length!=6 do
+                n=n-1
+            end
+            line.insert(0,$data[n][0])
+        end
+        i=i+1
+    end
+    i=0
+    $data.each do |line|
+        if line.length==4 then
+            n=i
+            while $data[n].length!=6 do
+                n=n-1
+            end
+            line.insert(0,$data[n][0])
+            line.insert(1,$data[n][1])
+        end
+        i=i+1
+    end
+end
+def change_int
+    #日付をintに変換
+    $data.each do |line|
+        for num in 0..2 do
+            line[num]=line[num].to_i
+        end
+    end
+end
+def del_dump
+    #不要な行の削除
+    i=0
+    $data.each do |line|
+        if line.length<6 then
+            p line,i
+            $data.delete_at(i)
+        end
+        i=i+1
     end
 end
 #読み込んだデータの出力処理
@@ -99,12 +173,7 @@ def output
         $data.each do |line|
             #出力データの各要素に対しての処理
             line.each do|cel|
-                if 800.0>cel then
-                    csv <<cel.to_s+","
-                else
-                    csv<<cel.to_s+","
-                    break
-                end
+                csv<<cel.to_s+","
             end
             csv<<"\n"
         end
@@ -114,5 +183,9 @@ end
 read
 create_data
 del_char
-del_area
+change_float
+change_line
+del_dump
+change_int
+
 output
