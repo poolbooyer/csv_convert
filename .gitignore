@@ -2,3 +2,4 @@ pdf.code-workspace
 loaddata.xlsx
 ~$loaddata.xlsx
 outputdata/*
+basedata/*
