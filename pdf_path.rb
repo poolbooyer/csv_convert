@@ -98,6 +98,7 @@ end
 #各行のデータ数の調整
 def change_line
     i=0
+    #データ不足部の削除(消滅等でその先の情報が提供されていない箇所)
     $data.each do |line|
         if line.length ==2 || line.length==1 || line.length==0 then
             $data.delete_at(i)
@@ -106,6 +107,7 @@ def change_line
     end
     stack=[]
     i=0
+    #風速情報等のデータが有る場合とない場合が混在しているデータの削除
     $data.each do |line|
         #気圧以降のデータの削除
         line.each do|cel|
@@ -122,8 +124,9 @@ def change_line
         i=i+1
     end
     i=0
-    #データ数が欠損している部分の補完
+    #日付データが欠けている行の欠損を解消
     $data.each do |line|
+        #月の情報が欠損している行の解消
         if line.length==5 then
             n=i
             while $data[n].length!=6 do
@@ -135,6 +138,7 @@ def change_line
     end
     i=0
     $data.each do |line|
+        #月日の情報が欠損している行の解消
         if line.length==4 then
             n=i
             while $data[n].length!=6 do
@@ -155,7 +159,7 @@ def change_int
     end
 end
 def del_dump
-    #不要な行の削除
+    #改行コード等しか残っていないデータの削除
     i=0
     $data.each do |line|
         if line.length<6 then
@@ -180,12 +184,18 @@ def output
     end
 end
 
+#読み込み、データ形式に関する処理
 read
 create_data
 del_char
+
+#文字コードの処理
 change_float
+
+#欠損等への対策処理
 change_line
+
+#出力に向けた処理、出力処理
 del_dump
 change_int
-
 output
